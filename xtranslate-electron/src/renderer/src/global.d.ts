@@ -1,0 +1,1 @@
+type TranslateType = 'baidu' | 'tencent'

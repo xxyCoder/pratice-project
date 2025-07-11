@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+/* @import 'tailwindcss/preflight'; */
+
+body {
+  app-region: drag;
+}
+
+.no-drag {
+  app-region: no-drag;
+}
+
+*:focus {
+  outline: unset;
+}
