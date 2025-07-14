@@ -1,16 +1,21 @@
 import { baiduTranslate } from '@renderer/api'
 import { useState } from 'react'
-import { handleBaiduTranslateData, TranslateResult } from './utils'
 import CopyButton from '../common/button/CopyButton'
+import { handleBaiduTranslateData, TranslateResult } from './utils'
 
 interface Props {
   fromLanguage?: string
   toLanguage?: string
+  className?: string
 }
 
 const MAX_INPUT_LENGTH = 2000
 
-const useTranslateInput = ({ fromLanguage = 'en', toLanguage = 'zh' }: Props = {}) => {
+const useTranslateInput = ({
+  fromLanguage = 'en',
+  toLanguage = 'zh',
+  className = ''
+}: Props = {}) => {
   const [sourceTxt, setSourceTxt] = useState('')
   const [translateResult, setTranslateResult] = useState<TranslateResult[]>([])
 
@@ -42,7 +47,9 @@ const useTranslateInput = ({ fromLanguage = 'en', toLanguage = 'zh' }: Props = {
   }
 
   const translateInput = (
-    <div className="relative my-2 p-2 rounded-xl bg-gray-100 h-40 no-drag flex flex-col">
+    <div
+      className={`relative my-2 p-2 rounded-xl bg-gray-100 h-40 no-drag flex flex-col ${className}`}
+    >
       <textarea
         value={sourceTxt}
         onChange={(e) => setSourceTxt(e.target.value)}

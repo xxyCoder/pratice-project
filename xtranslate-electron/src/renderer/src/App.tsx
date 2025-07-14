@@ -1,14 +1,23 @@
 import { Fragment } from 'react'
-import Header from './components/Header'
-import useTranslateInput from './components/Translate/TranslateInput'
-import TranslateOutput from './components/Translate/TranslateOutput'
+import Header from './components/header'
+import useTranslateInput from './components/translate/TranslateInput'
+import TranslateOutput from './components/translate/translateOutput'
+import useAutoDetection from './components/translate/autoDetection'
 
 function App(): React.JSX.Element {
-  const { translateInput, translateResult } = useTranslateInput()
+  const { fromLanguage, toLanguage, switchLanguageNode } = useAutoDetection({
+    className: 'my-2'
+  })
+  const { translateInput, translateResult } = useTranslateInput({
+    fromLanguage,
+    toLanguage
+  })
+
   return (
     <div className="p-2">
       <Header />
       {translateInput}
+      {switchLanguageNode}
       {translateResult.map(({ trans_result, from, type }) => {
         return (
           <Fragment key={type}>
