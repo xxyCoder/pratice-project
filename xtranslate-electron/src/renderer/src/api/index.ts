@@ -22,7 +22,7 @@ export const baiduTranslate = async ({
   from,
   to
 }: BaiduTranslateParams): Promise<BaiduTranslateResponse> => {
-  const encodedData = new URLSearchParams({ q: encodeURIComponent(q.trim()), from, to })
+  const encodedData = new URLSearchParams({ q, from, to })
   return await fetch(`${BACKEND_URL}/baidu/translate`, {
     method: 'POST',
     body: encodedData

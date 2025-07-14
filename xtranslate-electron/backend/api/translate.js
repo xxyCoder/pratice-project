@@ -8,14 +8,13 @@ const BAIDU_APP_KEY = process.env.BAIDU_APP_KEY
 export const baiduTranslate = async ({ q, from, to }) => {
   const salt = getRandomSalt()
 
-  const query = encodeURIComponent(q.trim())
   const encodedData = new URLSearchParams({
-    q: query,
+    q,
     from,
     to,
     appid: BAIDU_APP_ID,
     salt,
-    sign: MD5(`${BAIDU_APP_ID}${query}${salt}${BAIDU_APP_KEY}`)
+    sign: MD5(`${BAIDU_APP_ID}${q}${salt}${BAIDU_APP_KEY}`)
   })
   return await fetch('https://fanyi-api.baidu.com/api/trans/vip/translate', {
     method: 'POST',

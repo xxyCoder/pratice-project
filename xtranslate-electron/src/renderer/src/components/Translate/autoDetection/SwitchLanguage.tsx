@@ -25,7 +25,7 @@ const SwitchLanguage: FC<{
       </button>
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`absolute left-0 right-0 mt-1 rounded-sm bg-white shadow-xl text-center overflow-auto max-h-52 ${isOpen ? 'block' : 'hidden'}`}
+        className={`no-drag absolute z-10 left-0 right-0 mt-1 rounded-sm bg-white shadow-xl text-center overflow-auto max-h-52 ${isOpen ? 'block' : 'hidden'}`}
       >
         {Languages.filter((lang) => lang !== language).map((lang) => (
           <div

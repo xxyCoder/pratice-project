@@ -1,36 +1,35 @@
 import { app, shell, BrowserWindow, ipcMain, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import Icon from '../../resources/icon.png?asset'
+import Icon32 from '../../resources/icon-32.png?asset'
+import { handleIPCMainListener, setBrowserWindowAttr, setDockMenu, setTray } from './utils'
 
 const winWidth = 450
+const winHeight = 300
 const winOffsetPosition = 50
-
-function setBrowserWindowAttr(mainWindow: BrowserWindow) {
-  mainWindow.setWindowButtonVisibility(false)
-  mainWindow.setResizable(true)
-}
+let mainWindow: BrowserWindow | null = null
 
 function createWindow() {
   const { width } = screen.getPrimaryDisplay().workAreaSize
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: winWidth,
-    resizable: false,
+    height: winHeight,
     x: width - winWidth - winOffsetPosition,
     y: winOffsetPosition,
     titleBarStyle: 'hidden',
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux' ? { icon: Icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
-    }
+    },
+    icon: Icon
   })
 
-  setBrowserWindowAttr(mainWindow)
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow?.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -45,27 +44,30 @@ function createWindow() {
   }
 }
 
-const handleIPCMainListener = () => {
-  ipcMain.on('ping', () => console.log('pong')) // test
-  ipcMain.on('set-always-on-top', (event, flag) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-    if (win) win.setAlwaysOnTop(flag)
+app
+  .whenReady()
+  .then(() => {
+    setDockMenu({ app, icon: Icon32 })
   })
-}
-app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.electron')
+  .then(() => {
+    electronApp.setAppUserModelId('com.electron')
 
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
+    app.on('browser-window-created', (_, window) => {
+      optimizer.watchWindowShortcuts(window)
+    })
+
+    handleIPCMainListener(ipcMain)
+    createWindow()
+
+    if (mainWindow) {
+      setBrowserWindowAttr(mainWindow)
+      setTray({ mainWindow, app, icon: Icon })
+    }
+
+    app.on('activate', function () {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
   })
-
-  handleIPCMainListener()
-  createWindow()
-
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

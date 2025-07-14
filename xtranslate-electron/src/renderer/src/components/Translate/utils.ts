@@ -8,6 +8,7 @@ export interface TranslateResult {
 }
 
 export const handleBaiduTranslateData = (data: BaiduTranslateResponse['data']): TranslateResult => {
+  console.log(data)
   return {
     type: 'baidu',
     from: data?.from as Language,
