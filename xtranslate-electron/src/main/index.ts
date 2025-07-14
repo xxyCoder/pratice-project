@@ -8,6 +8,7 @@ const winOffsetPosition = 50
 
 function setBrowserWindowAttr(mainWindow: BrowserWindow) {
   mainWindow.setWindowButtonVisibility(false)
+  mainWindow.setResizable(true)
 }
 
 function createWindow() {
