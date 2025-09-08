@@ -28,6 +28,29 @@ app.post("/api/favorites", async (req, res) => {
   }
 })
 
+app.get("/api/favorites/:userId", async (req, res) => {
+  const { userId } = req.params
+
+  try {
+    const userFavorites = await db.select().from(favoritesTable).where(eq(favoritesTable.userId, userId))
+    res.status(200).json(userFavorites)
+  } catch (error) {
+    res.status(500).json({ msg: 'Something went wrong.' })
+  }
+})
+
+app.delete("/api/favorites/:userId/:recipeId", async (req, res) => {
+  const { userId, recipeId } = req.params
+  try {
+    await db.delete(favoritesTable).where(
+      and(eq(favoritesTable.userId, userId), eq(favoritesTable.recipeId, parseInt(recipeId)))
+    )
+    res.status(200).json({ msg: 'success.' })
+  } catch (err) {
+    res.status(500).json({ msg: 'Something went wrong.' })
+  }
+})
+
 app.listen(ENV.PORT, () => {
   console.log(`backend is running on http://localhost:${ENV.PORT}`)
 })
