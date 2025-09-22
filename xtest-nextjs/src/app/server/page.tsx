@@ -6,7 +6,7 @@ import {FC} from "react"
 const Server: FC = () => {
 	return (
 		<div>
-			<h1>Server pages</h1>
+			<h1>Server pages {Date.now()}</h1>
 			<ServerComp />
 			<ClientComp />
 			<ServerWithProps greeting="wooo" />
