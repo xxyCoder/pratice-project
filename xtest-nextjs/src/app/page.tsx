@@ -6,6 +6,7 @@ export default function Home() {
 			<h1>hello</h1>
 			<Link href="/server">to server</Link>
 			<Link href="/users/1">to user 1</Link>
+			<Link href="/client">to Client</Link>
 		</div>
 	)
 }
