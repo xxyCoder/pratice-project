@@ -1,4 +1,4 @@
-export default async function User({params}: {params: Promise<{id: string}>}) {
+export default async function User({params}: PageProps<"/users/[id]">) {
 	const {id} = await params
 	return <h1>hello user {id}</h1>
 }

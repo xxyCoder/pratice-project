@@ -1,4 +1,5 @@
 import type {Metadata} from "next"
+import type {ReactNode} from "react"
 import {Geist, Geist_Mono} from "next/font/google"
 import "./globals.css"
 
@@ -17,16 +18,21 @@ export const metadata: Metadata = {
 	description: "test nextjs",
 }
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode
-}>) {
+type RootLayoutProps = LayoutProps<"/"> & {
+	team?: ReactNode
+	analyze?: ReactNode
+}
+
+export default function RootLayout({children, team, analyze}: RootLayoutProps) {
 	return (
 		<html lang="en">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				{children}
+				<div className="flex items-center justify-center">
+					{team}
+					{analyze}
+				</div>
 			</body>
 		</html>
 	)
